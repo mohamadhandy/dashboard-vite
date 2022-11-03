@@ -1,39 +1,62 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
+import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const App = () => {
+  const activeMenu = false;
   return (
     <div className="App">
-      <p className="underline text-4xl">Test Dashboard</p>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <TooltipComponent content="Tooltip Content">
-        Show Tooltip
-      </TooltipComponent>
+      <Router>
+        <div className="flex relative dark:bg-main-dark-bg">
+          <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
+            <TooltipComponent content="Settings">
+              <ButtonComponent
+                className="text-3xl p-3 hover:drop-shadow-xl hover:bg-light-gray text-white"
+                style={{ background: "blue", borderRadius: "50%" }}
+                cssClass="e-flat"
+              >
+                <FiSettings />
+              </ButtonComponent>
+            </TooltipComponent>
+          </div>
+          {activeMenu ? (
+            <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white"></div>
+          ) : (
+            <div className="w-0 dark:bg-secondary-dark-bg">sidebar w-0</div>
+          )}
+          <div
+            className={`dark:bg-main-bg bg-main-bg min-h-screen w-full ${
+              activeMenu ? "md:ml-72" : "flex-2"
+            }`}
+          >
+            <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full">
+              Navbar
+            </div>
+          </div>
+          <div>
+            <Routes>
+              {/* dashboard e commerce */}
+              <Route path="/" element="ECommerce" />
+              <Route path="/ecommerce" element="ECommerce" />
+
+              {/* Pages */}
+              <Route path="/orders" element="Orders" />
+              <Route path="/employees" element="Employees" />
+              <Route path="/customers" element="Customers" />
+
+              {/* Apps */}
+              <Route path="/kanban" element="Kanban" />
+              <Route path="/editor" element="Editor" />
+              <Route path="/calendar" element="Calendar" />
+            </Routes>
+          </div>
+        </div>
+      </Router>
     </div>
   );
-}
+};
 
 export default App;
